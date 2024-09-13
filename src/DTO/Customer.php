@@ -7,52 +7,52 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Customer
 {
     #[Groups(['customer_list', 'invoice_create', 'invoice_view'])]
-    private string $sourceId;
+    private ?string $sourceId;
 
     #[Groups(['customer_list'])]
-    private string $name;
+    private ?string $name;
 
     #[Groups(['customer_list'])]
-    private string $regNo;
+    private ?string $regNo;
 
     #[Groups(['customer_list'])]
-    private string $vatNumber;
+    private ?string $vatNumber;
 
     #[Groups(['customer_list'])]
-    private string $updatedAt;
+    private ?string $updatedAt;
 
     #[Groups(['customer_list'])]
-    private array $emails;
+    private ?array $emails;
 
     #[Groups(['customer_list'])]
     private ?string $billingIban;
 
     #[Groups(['customer_list'])]
-    private string $customerType;
+    private ?string $customerType;
 
     #[Groups(['customer_list'])]
-    private string $recipient;
+    private ?string $recipient;
 
     #[Groups(['customer_list'])]
-    private Address $billingAddress;
+    private ?Address $billingAddress;
 
     #[Groups(['customer_list'])]
-    private Address $deliveryAddress;
+    private ?Address $deliveryAddress;
 
     #[Groups(['customer_list'])]
-    private string $paymentConditions;
+    private ?string $paymentConditions;
 
     #[Groups(['customer_list'])]
-    private string $phone;
+    private ?string $phone;
 
     #[Groups(['customer_list'])]
-    private string $reference;
+    private ?string $reference;
 
     #[Groups(['customer_list'])]
     private ?string $notes;
 
     #[Groups(['customer_list'])]
-    private PlanItem $planItem;
+    private ?PlanItem $planItem;
 
     public function __construct(?array $data = null)
     {
@@ -93,7 +93,7 @@ class Customer
         return $this->sourceId;
     }
 
-    public function setSourceId(string $sourceId): void
+    public function setSourceId(?string $sourceId): void
     {
         $this->sourceId = $sourceId;
     }
@@ -103,7 +103,7 @@ class Customer
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
@@ -113,7 +113,7 @@ class Customer
         return $this->regNo;
     }
 
-    public function setRegNo(string $regNo): void
+    public function setRegNo(?string $regNo): void
     {
         $this->regNo = $regNo;
     }
@@ -123,7 +123,7 @@ class Customer
         return $this->vatNumber;
     }
 
-    public function setVatNumber(string $vatNumber): void
+    public function setVatNumber(?string $vatNumber): void
     {
         $this->vatNumber = $vatNumber;
     }
@@ -133,7 +133,7 @@ class Customer
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(string $updatedAt): void
+    public function setUpdatedAt(?string $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -143,7 +143,7 @@ class Customer
         return $this->emails;
     }
 
-    public function setEmails(array $emails): void
+    public function setEmails(?array $emails): void
     {
         $this->emails = $emails;
     }
@@ -163,7 +163,7 @@ class Customer
         return $this->customerType;
     }
 
-    public function setCustomerType(string $customerType): void
+    public function setCustomerType(?string $customerType): void
     {
         $this->customerType = $customerType;
     }
@@ -173,7 +173,7 @@ class Customer
         return $this->recipient;
     }
 
-    public function setRecipient(string $recipient): void
+    public function setRecipient(?string $recipient): void
     {
         $this->recipient = $recipient;
     }
@@ -183,7 +183,7 @@ class Customer
         return $this->billingAddress;
     }
 
-    public function setBillingAddress(Address $billingAddress): void
+    public function setBillingAddress(?Address $billingAddress): void
     {
         $this->billingAddress = $billingAddress;
     }
@@ -193,7 +193,7 @@ class Customer
         return $this->deliveryAddress;
     }
 
-    public function setDeliveryAddress(Address $deliveryAddress): void
+    public function setDeliveryAddress(?Address $deliveryAddress): void
     {
         $this->deliveryAddress = $deliveryAddress;
     }
@@ -203,7 +203,7 @@ class Customer
         return $this->paymentConditions;
     }
 
-    public function setPaymentConditions(string $paymentConditions): void
+    public function setPaymentConditions(?string $paymentConditions): void
     {
         $this->paymentConditions = $paymentConditions;
     }
@@ -213,7 +213,7 @@ class Customer
         return $this->phone;
     }
 
-    public function setPhone(string $phone): void
+    public function setPhone(?string $phone): void
     {
         $this->phone = $phone;
     }
@@ -223,7 +223,7 @@ class Customer
         return $this->reference;
     }
 
-    public function setReference(string $reference): void
+    public function setReference(?string $reference): void
     {
         $this->reference = $reference;
     }
@@ -243,7 +243,7 @@ class Customer
         return $this->planItem;
     }
 
-    public function setPlanItem(PlanItem $planItem): void
+    public function setPlanItem(?PlanItem $planItem): void
     {
         $this->planItem = $planItem;
     }
