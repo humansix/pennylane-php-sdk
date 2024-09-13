@@ -2,13 +2,13 @@
 
 namespace Pennylane\Sdk;
 
-use Pennylane\Sdk\Api\CustomersApi;
 use Pennylane\Sdk\Api\CustomerInvoiceApi;
+use Pennylane\Sdk\Api\CustomersApi;
 use Pennylane\Sdk\Exception\PennylaneSDKException;
 
 class Pennylane
 {
-    public const VERSION = '1.0.1';
+    public const VERSION = '1.0.2';
 
     protected $client;
 

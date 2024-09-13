@@ -3,7 +3,7 @@
 namespace Pennylane\Sdk\Api;
 
 use Pennylane\Sdk\Client;
-use Pennylane\Sdk\DTO\ListInvoices;
+use Pennylane\Sdk\DTO\ListCustomers;
 use Pennylane\Sdk\Exception\PennylaneSDKException;
 use Pennylane\Sdk\ObjectSerializer;
 use Pennylane\Sdk\Result\Paginated;
@@ -21,7 +21,7 @@ class CustomersApi implements ApiInterface
         $this->serializer = $client->getSerializer();
     }
 
-    public function list(array $params = []): ListInvoices
+    public function list(array $params = []): ListCustomers
     {
         try {
             $response = $this->client->call('GET', self::ENDPOINT);
@@ -30,7 +30,7 @@ class CustomersApi implements ApiInterface
                 throw new PennylaneSDKException('Error get customers: '.json_encode($response));
             }
 
-            return $this->serializer->deserialize($response, ListInvoices::class, ['invoice_list']);
+            return $this->serializer->deserialize($response, ListCustomers::class, ['customer_list']);
         } catch (ExceptionInterface $e) {
             throw new PennylaneSDKException('Error communicating with API: '.$e->getMessage(), $e->getCode(), $e);
         }

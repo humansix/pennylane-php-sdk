@@ -6,16 +6,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class ListCustomers implements PaginationInterface
 {
-    #[Groups(['invoice_list'])]
+    #[Groups(['customer_list'])]
     private ?int $currentPage = null;
 
-    #[Groups(['invoice_list'])]
+    #[Groups(['customer_list'])]
     private ?int $totalPages = null;
 
-    #[Groups(['invoice_list'])]
+    #[Groups(['customer_list'])]
     private ?int $totalCustomers = null;
 
-    #[Groups(['invoice_list'])]
+    #[Groups(['customer_list'])]
     private array $customers = [];
 
     public function __construct(?array $data = null)
@@ -70,7 +70,7 @@ class ListCustomers implements PaginationInterface
 
     public function setCustomers(array $customers): void
     {
-        $this->customers = array_map(fn ($invoice) => new Invoice($invoice), $customers);
+        $this->customers = array_map(fn ($invoice) => new Customer($invoice), $customers);
     }
 
     public function addInvoice(array $invoice): void
