@@ -2,14 +2,16 @@
 
 namespace Pennylane\Sdk\DTO;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class Customer
 {
+    #[Groups(['invoice_create', 'invoice_view'])]
     private ?string $sourceId = null;
 
     public function __construct(?array $data = null)
     {
-        if ($data !== null) {
+        if (null !== $data) {
             $this->setSourceId($data['source_id'] ?? null);
         }
     }

@@ -2,8 +2,6 @@
 
 namespace Pennylane\Sdk\DTO;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 interface PaginationInterface
 {
     public function getTotalPages(): int;
@@ -12,5 +10,5 @@ interface PaginationInterface
 
     public function getTotal(): int;
 
-    public function getItems(): \SplObjectStorage;
+    public function getItems(): array;
 }

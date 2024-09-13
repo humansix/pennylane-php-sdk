@@ -11,7 +11,7 @@ use Pennylane\Sdk\DTO\LineItemsSectionAttributes;
 use Pennylane\Sdk\DTO\LineItem;
 use Pennylane\Sdk\DTO\Category;
 use Pennylane\Sdk\Exception\PennylaneSDKException;
-use Symfony\Component\Serializer\SerializerInterface;
+use Pennylane\Sdk\ObjectSerializer;
 
 class CustomerInvoiceApiTest extends TestCase
 {
@@ -22,8 +22,12 @@ class CustomerInvoiceApiTest extends TestCase
     protected function setUp(): void
     {
         $this->client = $this->createMock(Client::class);
-        $this->serializer = $this->createMock(SerializerInterface::class);
-        $this->api = new CustomerInvoiceApi($this->client, $this->serializer);
+        $this->serializer = $this->createMock(ObjectSerializer::class);
+        $this->client
+            ->expects($this->any())
+            ->method('getSerializer')
+            ->willReturn($this->serializer);
+        $this->api = new CustomerInvoiceApi($this->client);
     }
 
     public function testCreateInvoice(): void
@@ -69,52 +73,50 @@ class CustomerInvoiceApiTest extends TestCase
         $this->serializer
             ->expects($this->once())
             ->method('serialize')
-            ->with($invoiceCreate, 'json')
             ->willReturn($serializedInvoiceCreate);
 
         $this->client
             ->expects($this->once())
             ->method('call')
-            ->willReturn(['id' => '123']);
+            ->willReturn(['invoice' => ['id' => '123']]);
 
         $this->serializer
             ->expects($this->once())
             ->method('deserialize')
-            ->with(json_encode(['id' => '123']), CustomerInvoice::class, 'json')
-            ->willReturn($invoiceCreate);
+            ->willReturn(new Invoice(['id' => '123']));
 
         $result = $this->api->create($invoiceCreate);
 
-        $this->assertEquals($invoiceCreate, $result);
+        $this->assertEquals('123', $result->getId());
     }
 
     public function testUpdateInvoice(): void
     {
-        $invoice = new CustomerInvoice([
-            'id' => '123',
+        $invoice = new Invoice([
             'status' => 'updated'
+        ]);
+        $invoiceUpdated = new CustomerInvoice([
+            'invoice' => $invoice,
         ]);
 
         $this->serializer
             ->expects($this->once())
             ->method('serialize')
-            ->with($invoice, 'json')
-            ->willReturn(json_encode($invoice));
+            ->willReturn(json_encode($invoiceUpdated));
 
         $this->client
             ->expects($this->once())
             ->method('call')
-            ->willReturn(['id' => '123']);
+            ->willReturn(['invoice' => ['id' => '123']]);
 
         $this->serializer
             ->expects($this->once())
             ->method('deserialize')
-            ->with(json_encode(['id' => '123']), CustomerInvoice::class, 'json')
-            ->willReturn($invoice);
+            ->willReturn(new Invoice(['id' => '123', 'status' => 'updated']));
 
-        $result = $this->api->update('123', $invoice);
+        $result = $this->api->update('123', $invoiceUpdated);
 
-        $this->assertEquals($invoice, $result);
+        $this->assertEquals($invoice->getStatus(), $result->getStatus());
     }
 
     public function testCreateInvoiceThrowsException(): void
@@ -160,12 +162,6 @@ class CustomerInvoiceApiTest extends TestCase
 
         $serializedInvoiceCreate = json_encode($invoiceCreate);
 
-        $this->serializer
-            ->expects($this->once())
-            ->method('serialize')
-            ->with($invoiceCreate, 'json')
-            ->willReturn($serializedInvoiceCreate);
-
         $this->client
             ->expects($this->once())
             ->method('call')
@@ -179,16 +175,12 @@ class CustomerInvoiceApiTest extends TestCase
 
     public function testUpdateInvoiceThrowsException(): void
     {
-        $invoice = new CustomerInvoice([
-            'id' => '123',
+        $invoice = new Invoice([
             'status' => 'updated'
         ]);
-
-        $this->serializer
-            ->expects($this->once())
-            ->method('serialize')
-            ->with($invoice, 'json')
-            ->willReturn(json_encode($invoice));
+        $invoiceUpdated = new CustomerInvoice([
+            'invoice' => $invoice,
+        ]);
 
         $this->client
             ->expects($this->once())
@@ -198,6 +190,6 @@ class CustomerInvoiceApiTest extends TestCase
         $this->expectException(PennylaneSDKException::class);
         $this->expectExceptionMessage('Error updating invoice');
 
-        $this->api->update('123', $invoice);
+        $this->api->update('123', $invoiceUpdated);
     }
 }

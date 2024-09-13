@@ -10,7 +10,7 @@ class Paginated implements \Iterator
 
     protected array $params;
 
-    protected \SplObjectStorage $items;
+    protected array $items;
 
     protected int $totalItems;
 
@@ -38,8 +38,9 @@ class Paginated implements \Iterator
         $this->totalPages = $result->getTotalPages();
         $this->page = $result->getCurrentPage();
         $this->perPage = self::PER_PAGE;
-    return $this->items->current();
-}
+
+        return $this->items[$this->position];
+    }
 
     public function rewind(): void
     {
@@ -48,7 +49,7 @@ class Paginated implements \Iterator
 
     public function current(): mixed
     {
-        return $this->items->current();
+        return $this->items[$this->position];
     }
 
     public function key(): int
@@ -59,7 +60,7 @@ class Paginated implements \Iterator
     public function next(): void
     {
         if ($this->position + 1 >= $this->perPage && $this->totalPages >= $this->page) {
-            $this->page++;
+            ++$this->page;
             $this->position = 0;
             $this->params += [
                 'page' => $this->page,

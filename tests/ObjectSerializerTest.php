@@ -16,32 +16,32 @@ class ObjectSerializerTest extends TestCase
         $this->serializer = new ObjectSerializer();
     }
 
-    public function testSerializeCustomer()
+    public function testSerialize()
     {
         $customer = new Customer();
         $customer->setSourceId('0e67fc3c-c632-4feb-ad34-e18ed5fbf66a');
 
-        $json = $this->serializer->serialize($customer);
+        $json = $this->serializer->serialize($customer, ['invoice_create']);
         $expectedJson = '{"source_id":"0e67fc3c-c632-4feb-ad34-e18ed5fbf66a"}';
 
         $this->assertJsonStringEqualsJsonString($expectedJson, $json);
     }
 
-    public function testDeserializeCustomer()
+    public function testDeserialize()
     {
         $json = '{"source_id":"0e67fc3c-c632-4feb-ad34-e18ed5fbf66a"}';
 
-        $customer = $this->serializer->deserialize($json, Customer::class);
+        $customer = $this->serializer->deserialize($json, Customer::class, ['invoice_create']);
 
         $this->assertInstanceOf(Customer::class, $customer);
         $this->assertEquals('0e67fc3c-c632-4feb-ad34-e18ed5fbf66a', $customer->getSourceId());
     }
 
-    public function testDeserializeListInvoices()
+    public function testDeserializeBigObject()
     {
         $json = '{
             "current_page": 1,
-            "total_page": 5,
+            "total_pages": 5,
             "total_invoices": 100,
             "invoices": [
                 {
@@ -87,12 +87,12 @@ class ObjectSerializerTest extends TestCase
             ]
         }';
 
-        $listInvoices = $this->serializer->deserialize($json, ListInvoices::class);
+        $listInvoices = $this->serializer->deserialize($json, ListInvoices::class, ['invoice_list']);
         $this->assertInstanceOf(ListInvoices::class, $listInvoices);
         $this->assertEquals(1, $listInvoices->getCurrentPage());
-        $this->assertEquals(5, $listInvoices->getTotalPage());
+        $this->assertEquals(5, $listInvoices->getTotalPages());
         $this->assertEquals(100, $listInvoices->getTotalInvoices());
         $this->assertCount(1, $listInvoices->getInvoices());
-        $this->assertEquals('INV-001', $listInvoices->getInvoices()[0]['invoice_number']);
+        $this->assertEquals('INV-001', $listInvoices->getInvoices()[0]->getInvoiceNumber());
     }
 }

@@ -55,7 +55,7 @@
       "@phpstan",
       "@phpmd"
     ],
-    "phpcs": "./vendor/bin/phpcs",
+    "phpcs": "./vendor/bin/phpcs ./src",
     "phpstan": "./vendor/bin/phpstan analyse -c phpstan.neon src",
     "phpmd": "./vendor/bin/phpmd ./src text ./phpmd.xml"
   }

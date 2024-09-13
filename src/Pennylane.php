@@ -2,21 +2,13 @@
 
 namespace Pennylane\Sdk;
 
-use Pennylane\Sdk\Api\Authentication;
-use Pennylane\Sdk\Api\Users;
-use Pennylane\Sdk\Api\Listings;
-use Pennylane\Sdk\Api\CurrentUser;
+use Pennylane\Sdk\Api\CustomersApi;
 use Pennylane\Sdk\Api\CustomerInvoiceApi;
 use Pennylane\Sdk\Exception\PennylaneSDKException;
-use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Http\Message\StreamInterface;
 
 class Pennylane
 {
-    const VERSION = '1.0.0';
+    public const VERSION = '1.0.1';
 
     protected $client;
 
@@ -35,4 +27,8 @@ class Pennylane
         return new CustomerInvoiceApi($this->client, $this->token);
     }
 
+    public function customer(): CustomersApi
+    {
+        return new CustomersApi($this->client, $this->token);
+    }
 }

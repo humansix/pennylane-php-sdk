@@ -1,19 +1,26 @@
 <?php
+
 namespace Pennylane\Sdk\DTO;
+
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class Product
 {
+    #[Groups(['invoice_create', 'invoice_view', 'invoice_update'])]
     private ?string $sourceId;
 
+    #[Groups(['invoice_create', 'invoice_view'])]
     private ?float $price;
 
+    #[Groups(['invoice_create', 'invoice_view'])]
     private ?string $vatRate;
 
+    #[Groups(['invoice_create', 'invoice_view'])]
     private ?string $unit;
 
     public function __construct(?array $data = null)
     {
-        if ($data !== null) {
+        if (null !== $data) {
             $this->setSourceId($data['source_id'] ?? null);
             $this->setPrice($data['price'] ?? null);
             $this->setVatRate($data['vat_rate'] ?? null);

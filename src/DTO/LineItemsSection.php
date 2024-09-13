@@ -3,20 +3,27 @@
 namespace Pennylane\Sdk\DTO;
 
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class LineItemsSection
 {
-    #[Groups(["line_items"])]
+    #[Groups(['invoice_create', 'invoice_view'])]
     private ?string $title = null;
 
-    #[Groups(["line_items"])]
+    #[Groups(['invoice_create', 'invoice_view'])]
     private ?string $description = null;
 
-    #[Groups(["line_items"])]
+    #[Groups(['invoice_create', 'invoice_view'])]
     private ?int $rank = null;
 
-    // Getters and Setters
+    public function __construct(?array $data = null)
+    {
+        if (null !== $data) {
+            $this->setTitle($data['title'] ?? null);
+            $this->setDescription($data['description'] ?? null);
+            $this->setRank($data['rank'] ?? null);
+        }
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;

@@ -1,29 +1,38 @@
 <?php
+
 namespace Pennylane\Sdk\DTO;
+
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class LineItem
 {
+    #[Groups(['invoice_create', 'invoice_view', 'invoice_update'])]
     private ?string $label = null;
 
+    #[Groups(['invoice_create', 'invoice_view', 'invoice_update'])]
     private ?int $quantity = null;
 
+    #[Groups(['invoice_create', 'invoice_view'])]
     private ?float $discount = null;
 
+    #[Groups(['invoice_create', 'invoice_view', 'invoice_update'])]
     private ?int $sectionRank = null;
 
+    #[Groups(['invoice_create', 'invoice_view', 'invoice_update'])]
     private ?string $planItemNumber = null;
 
+    #[Groups(['invoice_create', 'invoice_view', 'invoice_update'])]
     private ?Product $product = null;
 
     public function __construct(?array $data = null)
     {
-        if ($data !== null) {
+        if (null !== $data) {
             $this->setLabel($data['label'] ?? null);
             $this->setQuantity($data['quantity'] ?? null);
             $this->setDiscount($data['discount'] ?? null);
             $this->setSectionRank($data['section_rank'] ?? null);
             $this->setPlanItemNumber($data['plan_item_number'] ?? null);
-            $this->setProduct(isset($data['product']) ? $data['product'] : null);
+            $this->setProduct($data['product'] ?? null);
         }
     }
 

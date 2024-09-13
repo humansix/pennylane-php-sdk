@@ -2,14 +2,20 @@
 
 namespace Pennylane\Sdk\DTO;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 class CustomerInvoice
 {
+    #[Groups(['invoice_create'])]
     private bool $createCustomer;
 
+    #[Groups(['invoice_create'])]
     private bool $createProducts;
 
+    #[Groups(['invoice_create', 'invoice_update'])]
     private Invoice $invoice;
 
+    #[Groups(['invoice_create'])]
     private bool $updateCustomer;
 
     public function __construct(?array $data = null)

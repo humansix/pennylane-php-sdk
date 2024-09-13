@@ -4,7 +4,7 @@ namespace Pennylane\Sdk\DTO;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
-class ListInvoices implements PaginationInterface
+class ListCustomers implements PaginationInterface
 {
     #[Groups(['invoice_list'])]
     private ?int $currentPage = null;
@@ -13,18 +13,18 @@ class ListInvoices implements PaginationInterface
     private ?int $totalPages = null;
 
     #[Groups(['invoice_list'])]
-    private ?int $totalInvoices = null;
+    private ?int $totalCustomers = null;
 
     #[Groups(['invoice_list'])]
-    private array $invoices = [];
+    private array $customers = [];
 
     public function __construct(?array $data = null)
     {
         if (null !== $data) {
             $this->setCurrentPage($data['current_page'] ?? 0);
             $this->setTotalPages($data['total_pages'] ?? 0);
-            $this->setTotalInvoices($data['total_invoices'] ?? 0);
-            $this->setInvoices($data['invoices'] ?? []);
+            $this->setTotalCustomers($data['total_customers'] ?? 0);
+            $this->setCustomers($data['customers'] ?? []);
         }
     }
 
@@ -48,38 +48,38 @@ class ListInvoices implements PaginationInterface
         $this->currentPage = $currentPage;
     }
 
-    public function getTotalInvoices(): int
+    public function getTotalCustomers(): int
     {
-        return $this->totalInvoices;
+        return $this->totalCustomers;
     }
 
     public function getTotal(): int
     {
-        return $this->getTotalInvoices();
+        return $this->getTotalCustomers();
     }
 
-    public function setTotalInvoices(int $totalInvoices): void
+    public function setTotalCustomers(int $totalCustomers): void
     {
-        $this->totalInvoices = $totalInvoices;
+        $this->totalCustomers = $totalCustomers;
     }
 
-    public function getInvoices(): array
+    public function getCustomers(): array
     {
-        return $this->invoices;
+        return $this->customers;
     }
 
-    public function setInvoices(array $invoices): void
+    public function setCustomers(array $customers): void
     {
-        $this->invoices = array_map(fn ($invoice) => new Invoice($invoice), $invoices);
+        $this->customers = array_map(fn ($invoice) => new Invoice($invoice), $customers);
     }
 
     public function addInvoice(array $invoice): void
     {
-        $this->invoices[] = $invoice;
+        $this->customers[] = $invoice;
     }
 
     public function getItems(): array
     {
-        return $this->getInvoices();
+        return $this->getCustomers();
     }
 }

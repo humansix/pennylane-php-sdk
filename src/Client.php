@@ -13,8 +13,7 @@ use Psr\Log\NullLogger;
 
 class Client implements LoggerAwareInterface
 {
-
-    const PENNYLANE_INTEGRATION_API = 'https://app.pennylane.com/api/external/v1';
+    public const PENNYLANE_INTEGRATION_API = 'https://app.pennylane.com/api/external/v1';
 
     protected ClientInterface $httpClient;
 
@@ -37,18 +36,18 @@ class Client implements LoggerAwareInterface
         $this->serializer = new ObjectSerializer();
     }
 
-    public function call(string $httpMethod, string $uri, string|array $params = null, array $headers = null): array
+    public function call(string $httpMethod, string $uri, string|array|null $params = null, ?array $headers = null): array
     {
         $headers = [
-            'Authorization' => 'bearer ' . $this->config['token'],
+            'Authorization' => 'bearer '.$this->config['token'],
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ];
         if ('GET' == $httpMethod && null !== $params && is_array($params)) {
-            $uri .= '?' . http_build_query($params, '', '&');
+            $uri .= '?'.http_build_query($params, '', '&');
         }
 
-        $request = $this->requestFactory->createRequest($httpMethod, self::PENNYLANE_INTEGRATION_API . $uri);
+        $request = $this->requestFactory->createRequest($httpMethod, self::PENNYLANE_INTEGRATION_API.$uri);
 
         if ('GET' != $httpMethod && null !== $params && is_array($params)) {
             $request = $request->withBody($this->streamFactory->createStream(http_build_query($params)));
@@ -65,6 +64,7 @@ class Client implements LoggerAwareInterface
         }
 
         $response = $this->httpClient->sendRequest($request);
+
         return json_decode($response->getBody()->getContents(), true);
     }
 
